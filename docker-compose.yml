@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  database:
+    container_name: golang-chatapp
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: telio
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: golang-chatapp
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql
+
+  golangci-lint:
+    image: golangci/golangci-lint:v1.43.0  # Use the specific version you need
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: golangci-lint run --out-format colored-line-number
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

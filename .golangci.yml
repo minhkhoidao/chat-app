@@ -1,0 +1,40 @@
+# .golangci.yml
+linters-settings:
+  govet:
+    check-shadowing: true
+  golint:
+    min-confidence: 0.8
+  gocritic:
+    enabled-tags:
+      - performance
+      - style
+  goimports:
+    local-prefixes: chat-app
+  gocyclo:
+    min-complexity: 15
+
+linters:
+  enable:
+    - govet
+    - golint
+    - gocritic
+    - goimports
+    - gocyclo
+    - unparam
+    - deadcode
+    - typecheck
+    - varcheck
+    - structcheck
+    - maligned
+    - errcheck
+    - unused
+    - staticcheck
+  disable:
+    - gochecknoglobals
+
+run:
+  timeout: 5m
+  issues-exit-code: 1
+  tests: true
+  skip-dirs:
+    - vendor

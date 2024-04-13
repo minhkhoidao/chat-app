@@ -18,13 +18,13 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 
 	// Initialize the repository
 	userRepo := repository.NewUserRepository(db)
-
+	chatRepo := repository.NewMessageRepository(db)
 	// Initialize the services
 	userService := services.NewUserService(userRepo)
-
+	chatService := services.NewChatService(chatRepo)
 	// Initialize the handlers
 	userHandler := handlers.NewUserHandler(userService)
-
+	chatHandler := handlers.NewChatHandler(chatService)
 	// Public routes
 	router.POST("/login", userHandler.Login)
 	router.POST("/register", userHandler.Register)
@@ -36,6 +36,8 @@ func SetupRouter(db *sqlx.DB) *gin.Engine {
 	{
 		// Add protected routes here
 		// e.g., protected.GET("/user/profile", userHandler.GetProfile)
+		protected.POST("/users/:senderID/messages/:recipientID/send", chatHandler.SendMessage)
+		protected.GET("/users/:senderID/messages/:recipientID", chatHandler.GetConversation)
 	}
 
 	return router
